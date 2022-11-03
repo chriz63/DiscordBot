@@ -28,7 +28,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using DiscordBot2Console.Formatters;
+using DiscordBotConsole.Commands;
+using DiscordBotConsole.Formatters;
 
 namespace DiscordBotConsole
 {
@@ -91,6 +92,7 @@ namespace DiscordBotConsole
             this.CommandsNext.SetHelpFormatter<HelpFormatter>();
 
             // register the available commands
+            this.CommandsNext.RegisterCommands<AdminCommands>();
 
             await this.Client.ConnectAsync();
             await Task.Delay(-1);

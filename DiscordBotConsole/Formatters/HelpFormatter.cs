@@ -26,7 +26,7 @@ using System.Text;
 using System.Collections.Generic;
 
 
-namespace DiscordBot2Console.Formatters
+namespace DiscordBotConsole.Formatters
 {   
     /// <summary>
     /// Class <c>HelpFormatter</c> is the class including a HelpFormatter
