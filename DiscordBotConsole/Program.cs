@@ -17,15 +17,18 @@
  */
 
 using DSharpPlus;
-using DSharpPlus.EventArgs;
 using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Exceptions;
+
+using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using System;
 using Microsoft.Extensions.DependencyInjection;
+
+using DiscordBot2Console.Formatters;
 
 namespace DiscordBotConsole
 {
@@ -84,7 +87,10 @@ namespace DiscordBotConsole
             this.CommandsNext.CommandExecuted += this.Commands_CommandExecuted;
             this.CommandsNext.CommandErrored += this.Commands_CommandErrored;
 
-            // register the available comments
+            // set the help formatter
+            this.CommandsNext.SetHelpFormatter<HelpFormatter>();
+
+            // register the available commands
 
             await this.Client.ConnectAsync();
             await Task.Delay(-1);
