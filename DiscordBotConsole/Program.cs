@@ -27,9 +27,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using DiscordBotConsole.Commands;
 using DiscordBotConsole.Formatters;
+using DiscordBotConsole.Commands.CommandGroups;
 
 namespace DiscordBotConsole
 {
@@ -46,8 +45,6 @@ namespace DiscordBotConsole
         public readonly EventId BotEventId = new EventId(1, "DiscordBot");
         
         public DiscordClient Client { get; set; }
-
-        public ServiceCollection Services { get; set; }
 
         public CommandsNextExtension CommandsNext { get; set; }
 
@@ -72,13 +69,18 @@ namespace DiscordBotConsole
                 Intents = DiscordIntents.All
             });
 
+            
             // Add dependency injection
-            this.Services = new ServiceCollection();
+            var services = new ServiceCollection()
+                .AddSingleton(Configuration)
+                .BuildServiceProvider();
+            
 
             // Configure the Commands
             this.CommandsNext = this.Client.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefixes = new string[] { Configuration.GetRequiredSection("Settings:CommandPrefix").Value },
+                Services = services,
             });
 
             // Hook some events to see whats going on

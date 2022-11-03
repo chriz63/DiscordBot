@@ -19,11 +19,12 @@
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 
-namespace DiscordBotConsole.Commands
-{   
+namespace DiscordBotConsole.Commands.CommandGroups
+{
     /// <summary>
     /// Class <c>AdminCommands</c> includes all commands available for admins
     /// </summary>
@@ -33,6 +34,8 @@ namespace DiscordBotConsole.Commands
     [RequirePermissions(Permissions.ManageGuild)]
     public class AdminCommands : BaseCommandModule
     {
+        public IConfiguration Configuration { get; set; }
+
         /// <summary>
         /// Task <c>Clear</c> clears all or the given number of the messages in current channel
         /// and send's back a simple string
@@ -50,7 +53,7 @@ namespace DiscordBotConsole.Commands
             {
                 rangeToDelete = range[0];
             }
-            else 
+            else
             {
                 rangeToDelete = 100000;
             }
