@@ -39,7 +39,7 @@ namespace DiscordBotConsole
     {
 
         public IConfiguration Configuration = new ConfigurationBuilder()
-            .AddJsonFile("Settings/appsettings.json", optional:true, reloadOnChange:true)
+            .AddJsonFile("appsettings.json", optional:true, reloadOnChange:true)
             .Build();
 
         public readonly EventId BotEventId = new EventId(1, "DiscordBot");
