@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
@@ -23,12 +24,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-
 using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
-using System.Collections.Generic;
-using DSharpPlus.Entities;
-using System.Reflection.Metadata;
+
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {

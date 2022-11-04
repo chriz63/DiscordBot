@@ -19,9 +19,9 @@
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualBasic;
+
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {

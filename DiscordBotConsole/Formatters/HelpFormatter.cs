@@ -16,13 +16,11 @@
  * limitations under the License.
  */
 
-using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.CommandsNext.Entities;
 using DSharpPlus.Entities;
 
-using System.Text;
 using System.Collections.Generic;
 
 
