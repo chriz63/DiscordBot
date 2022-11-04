@@ -42,10 +42,18 @@ namespace DiscordBotConsole.Commands.CommandGroups
         public IConfiguration Configuration { get; set; }
         private DiscordEmbedBuilder embed;
 
+        /// <summary>
+        /// Task <c>City</c> sends an DiscordEmbed with current informations about weather from given city
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="city"></param>
+        /// <returns></returns>
         [Command("city")]
         [Description("Displays weather informations for the given city")]
         public async Task City(CommandContext ctx, [RemainingText] string city)
         {
+            await ctx.Channel.TriggerTypingAsync();
+
             var cityName = city.Replace(" ", "+");
             var nominatimUrl = $"https://nominatim.openstreetmap.org/search.php?q={cityName}&format=jsonv2";
 
