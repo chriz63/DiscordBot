@@ -96,6 +96,7 @@ namespace DiscordBotConsole
             // register the available commands
             this.CommandsNext.RegisterCommands<AdminCommands>();
             this.CommandsNext.RegisterCommands<WeatherCommands>();
+            this.CommandsNext.RegisterCommands<FunCommands>();
 
             await this.Client.ConnectAsync();
             await Task.Delay(-1);
