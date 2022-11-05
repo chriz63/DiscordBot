@@ -57,7 +57,7 @@ namespace DiscordBotConsole.ApiRequests
         }
 
         /// <summary>
-        /// Task <c>GetJsonArray</c> parsing a generic Json Request to an generic object
+        /// Task <c>GetJson</c> parsing a generic Json Request to an generic object
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
