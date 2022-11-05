@@ -21,11 +21,18 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DiscordBotConsole.ApiRequests
-{
+{   
+    /// <summary>
+    /// Class <c>JsonApi</c> helps to parse Json from Web API's
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class JsonApi <T>
     {
         HttpClient client = new HttpClient();
 
+        /// <summary>
+        /// The Constructor adds Headers to the HttpClient
+        /// </summary>
         public JsonApi()
         {
             client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6,ru;q=0.4");
@@ -35,6 +42,11 @@ namespace DiscordBotConsole.ApiRequests
 
         }
 
+        /// <summary>
+        /// Task <c>GetJsonArray</c> parsing a Json Request to an generic array
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task<T[]> GetJsonArray(string url)
         {
             var text = await client.GetStringAsync(url);
@@ -44,6 +56,11 @@ namespace DiscordBotConsole.ApiRequests
             return jsonArray;
         }
 
+        /// <summary>
+        /// Task <c>GetJsonArray</c> parsing a generic Json Request to an generic object
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task <T> GetJson(string url)
         {
             var text = await client.GetStringAsync(url);
