@@ -24,31 +24,28 @@ namespace DiscordBotConsole.ApiRequests
 {
     public class JsonApi <T>
     {
-        public async Task<T[]> GetJsonArray(string url)
-        {
-            HttpClient client = new HttpClient();
+        HttpClient client = new HttpClient();
 
+        public JsonApi()
+        {
             client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6,ru;q=0.4");
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
             client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate,sdch");
             client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 
+        }
+
+        public async Task<T[]> GetJsonArray(string url)
+        {
             var text = await client.GetStringAsync(url);
 
-            T[] json = JsonConvert.DeserializeObject<T[]>(text);
+            T[] jsonArray = JsonConvert.DeserializeObject<T[]>(text);
 
-            return json;
+            return jsonArray;
         }
 
         public async Task <T> GetJson(string url)
         {
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6,ru;q=0.4");
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
-            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate,sdch");
-            client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-
             var text = await client.GetStringAsync(url);
 
             T json = JsonConvert.DeserializeObject<T>(text);
