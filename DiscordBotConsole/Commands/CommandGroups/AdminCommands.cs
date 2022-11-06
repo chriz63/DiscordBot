@@ -17,13 +17,13 @@
  */
 
 using DSharpPlus;
+using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using DSharpPlus.Entities;
-using SixLabors.ImageSharp;
+
 using DiscordBotConsole.Commands.Models;
 
 namespace DiscordBotConsole.Commands.CommandGroups
