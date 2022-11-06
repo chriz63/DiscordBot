@@ -16,15 +16,18 @@
  * limitations under the License.
  */
 
+using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
 using System.IO;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
-using IronBarCode;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using DSharpPlus.Entities;
+
+using QRCoder;
+
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -52,8 +55,12 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             await ctx.Channel.TriggerTypingAsync();
 
-            QRCodeWriter.CreateQrCode(content, 500, QRCodeWriter.QrErrorCorrectionLevel.Medium)
-                .SaveAsPng(QrCodePath);
+            QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+
+            qrCodeImage.Save(QrCodePath);
 
             using (var fileStream = new FileStream(QrCodePath, FileMode.Open, FileAccess.Read))
             {
