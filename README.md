@@ -28,6 +28,7 @@
 - !help
 - !admin clear (only available for bot owners) / clears a text channel
 - !admin spammer (only available for bot owners) / spamms a text channel
+- !admin userstatuslist | !admin usl / sends a list from all available users in guild with their online statuses
 - !weather city / sends weather information from a specific city to a channel
 - !fun penis / gets a random penis length from a user to a channel
 - !qr generate | !qr gen / generates a qr code with user specified content
