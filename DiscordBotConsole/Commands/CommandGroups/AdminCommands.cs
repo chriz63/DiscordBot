@@ -22,6 +22,9 @@ using DSharpPlus.CommandsNext.Attributes;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using DSharpPlus.Entities;
+using SixLabors.ImageSharp;
+using DiscordBotConsole.Commands.Models;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -83,6 +86,35 @@ namespace DiscordBotConsole.Commands.CommandGroups
                 await ctx.Channel.SendMessageAsync(message);
                 await Task.Delay(1000);
             }
+        }
+
+        /// <summary>
+        /// Task <c>UserList</c> gets all users from the guild with their statuses
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        [Command("userstatuslist")]
+        [Aliases("usl")]
+        [Description("Gets all users from the guild with their statuses")]
+        public async Task UserStatusList(CommandContext ctx)
+        {
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = "User Status List"
+            };
+
+            foreach (var member in await ctx.Guild.GetAllMembersAsync())
+            {
+                if (member.Presence == null)
+                {
+                    embed.AddField(member.DisplayName, "Offline");
+                }
+                else
+                {
+                    embed.AddField(member.DisplayName, member.Presence.Status.ToString());
+                }
+            }
+            await ctx.Channel.SendMessageAsync(embed);
         }
     }
 }
