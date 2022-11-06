@@ -13,9 +13,12 @@
     "CommandPrefix": "!"
   },
   "ApiKeys": {
-    "OpenWeatherMap": "Put your OpenWeatherMap credentials here"
+    "OpenWeatherMap": "Put your OpenWeatherMap credentials here",
+    "TankerKoenig": "Put your TankerKoenig credentials here"
+  },
+  "QrCode": {
+    "Path": "Put your saving path for qr codes here"
   }
-}
 ```
 
 - Now you are able to run the bot and/or modify the code to your own requirements
