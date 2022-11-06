@@ -60,8 +60,6 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             var owmUrl = $"https://api.openweathermap.org/data/2.5/weather?lat={nominatimData[0].lat}&lon={nominatimData[0].lon}&units=metric&appid={Configuration.GetRequiredSection("ApiKeys:OpenWeatherMap").Value}";
 
-            Console.WriteLine(owmUrl);
-
             JsonApi<WeatherModel> jsonApi1 = new JsonApi<WeatherModel>();
             WeatherModel weatherData = await jsonApi1.GetJson(owmUrl);
 
