@@ -39,8 +39,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
          * Command GasPrices is currently not working, work in progress
          */
 
-        //[Command("gasolineprice")]
-        //[Aliases("gp")]
+        [Command("gasolineprice")]
+        [Aliases("gp")]
         public async Task GasPrices(CommandContext ctx, int radius, [RemainingText] string city)
         {
             var cityName = city.Replace(" ", "+");
@@ -50,6 +50,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
             NominatimModel[] nominatimData = await nominatimApi.GetJsonArray(nominatimUrl);
 
             var testUrl = "https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002";
+            
+            
             var tankerKoenigUrl = $"https://creativecommons.tankerkoenig.de/json/list.php?lat={nominatimData[0].lat}&lng={nominatimData[0].lon}&rad={radius}&sort=dist&type=all&apikey={Configuration.GetRequiredSection("ApiKeys:TankerKoenig").Value}";
 
             Console.WriteLine(tankerKoenigUrl);
