@@ -25,6 +25,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Runtime.Serialization.Formatters;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -80,7 +81,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
             await ctx.TriggerTypingAsync();
 
             // german jokes
-            if (language == null || language == "de")
+            if (language == null || language == "de" || language == "deutsch" || language == "german")
             {
                 jokeApiUrl = "https://v2.jokeapi.dev/joke/Any?lang=de&type=twopart";
             }
@@ -100,6 +101,41 @@ namespace DiscordBotConsole.Commands.CommandGroups
                 Title = "Your joke",
                 Description = $"{jokeData.setup} \n\n{jokeData.delivery} {laughingEmoji}"
             };
+
+            await ctx.Channel.SendMessageAsync(embed);
+        }
+
+        /// <summary>
+        /// Task <c>Gif</c> sends a random GIF by category to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="size"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        [Command("gif")]
+        [Description("Sends a random GIF by category to a channel.\n" + " Available sizes are: <small> or <medium>\n\n" +
+            "Usage: !fun gif <size> <category>")]
+        public async Task Gif(CommandContext ctx, string size,[RemainingText] string category)
+        {
+            var tenorApiUrl = $"https://g.tenor.com/v1/random?q={category}&key={Configuration.GetRequiredSection("ApiKeys:Tenor").Value}&limit=1";
+
+            Console.WriteLine(tenorApiUrl);
+
+            JsonApi<TenorModel> tenorApi = new JsonApi<TenorModel>();
+            TenorModel tenorData = await tenorApi.GetJson(tenorApiUrl);
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder();
+
+            if (size == "small")
+            {
+                embed.WithImageUrl(tenorData.results[0].media[0].tinygif.url);
+            }
+            else if (size == "medium")
+            {
+                embed.WithImageUrl(tenorData.results[0].media[0].mediumgif.url);
+            }
+
+            embed.WithFooter("Via Tenor", "https://www.gstatic.com/tenor/web/attribution/via_tenor_logo_white.png");
 
             await ctx.Channel.SendMessageAsync(embed);
         }
