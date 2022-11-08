@@ -42,6 +42,10 @@ namespace DiscordBotConsole
             .AddJsonFile("appsettings.json", optional:true, reloadOnChange:true)
             .Build();
 
+        public IConfiguration DevConfiguration = new ConfigurationBuilder()
+            .AddJsonFile("devsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
         public readonly EventId BotEventId = new EventId(1, "DiscordBot");
         
         public DiscordClient Client { get; set; }
@@ -59,10 +63,16 @@ namespace DiscordBotConsole
         /// </summary>
         public async Task RunBotAsync()
         {
+            string Token = Configuration.GetRequiredSection("Settings:Token").Value;
+
+#if DEBUG
+            Token = DevConfiguration.GetRequiredSection("Settings:Token").Value;
+#endif
+
             // Configure the Discord Client
             this.Client = new DiscordClient(new DiscordConfiguration()
             {
-                Token = Configuration.GetRequiredSection("Settings:Token").Value,
+                Token = Token,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 MinimumLogLevel = LogLevel.Debug,

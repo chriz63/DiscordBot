@@ -134,6 +134,7 @@ _NCrunch*
 
 # Configuration files
 appsettings.json
+devsettings.json
 
 # Other files and directories
 .vscode/
