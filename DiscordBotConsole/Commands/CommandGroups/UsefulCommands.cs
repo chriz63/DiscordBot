@@ -19,10 +19,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
-using System;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
@@ -30,12 +27,14 @@ using DSharpPlus.Entities;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
+    /// <summary>
+    /// Class <c>UsfulCommands</c> includes useful commands
+    /// </summary>
     [Group("useful")]
     [Description("This Group includes useful commands i.e. gasoline prices")]
     public class UsefulCommands : BaseCommandModule
     {
         public IConfiguration Configuration;
-
 
         /// <summary>
         /// Task <c>GasolinePrices</c> send the Gas Stations with current prices in 3 km radius to a channel
@@ -61,9 +60,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
             TankerKoenigModel tankerKoenigData = await tankerKonigApi.GetJson(tankerKoenigUrl);
 
             foreach (var station in tankerKoenigData.stations)
-            {
-                Console.WriteLine(station.street);
-
+            {   
                 // Build a own embed for every gas station
                 DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
                 {

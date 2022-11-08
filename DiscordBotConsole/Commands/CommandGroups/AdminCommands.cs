@@ -24,8 +24,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-using DiscordBotConsole.Commands.Models;
-
 namespace DiscordBotConsole.Commands.CommandGroups
 {
     /// <summary>

@@ -17,17 +17,17 @@
  */
 
 using DSharpPlus;
+using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
 
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using DSharpPlus.CommandsNext.Attributes;
+
 using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
-using DSharpPlus.Entities;
+
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
