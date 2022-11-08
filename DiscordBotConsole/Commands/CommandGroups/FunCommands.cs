@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
+using DiscordBotConsole.ApiRequests;
+using DiscordBotConsole.Commands.Models;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -32,9 +34,16 @@ namespace DiscordBotConsole.Commands.CommandGroups
     [Description("Funny commands")]
     public class FunCommands : BaseCommandModule
     {
-        public DiscordEmbedBuilder embed;
+        public IConfiguration Configuration { get; set; }
 
+        /// <summary>
+        /// Task <c>Penis</c> sends a users penis size from random length
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="discordUser"></param>
+        /// <returns></returns>
         [Command("penis")]
+        [Description("Sends a users penis size from random length")]
         public async Task Penis(CommandContext ctx, DiscordMember discordUser = null)
         {
             await ctx.TriggerTypingAsync();
@@ -43,7 +52,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             string length = new string('=', new Random(user.Id.GetHashCode()).Next(0, 20));
 
-            embed = new DiscordEmbedBuilder()
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
             {
                 Title = "Peepee size machine",
                 Color = DiscordColor.Yellow,
@@ -51,6 +60,45 @@ namespace DiscordBotConsole.Commands.CommandGroups
             };
             
             await ctx.RespondAsync(embed);
+        }
+
+        /// <summary>
+        /// Task <c>Joke</c> sends a joke in german or english to the channel
+        /// </summary> 
+        /// <param name="ctx"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        [Command("joke")]
+        [Description("Sends a joke in german or english to the channel")]
+        public async Task Joke(CommandContext ctx, string language = null)
+        {
+            string jokeApiUrl = null;
+
+            await ctx.TriggerTypingAsync();
+
+            // german jokes
+            if (language == null || language == "de")
+            {
+                jokeApiUrl = "https://v2.jokeapi.dev/joke/Any?lang=de&type=twopart";
+            }
+            // english jokes
+            else if (language == "en" || language == "english" || language == "englisch")
+            {
+                jokeApiUrl = "https://v2.jokeapi.dev/joke/Any?lang=en&type=twopart";
+            }
+
+            JsonApi<JokeApiModel> jokeJson = new JsonApi<JokeApiModel>();
+            JokeApiModel jokeData = await jokeJson.GetJson(jokeApiUrl);
+
+            var laughingEmoji = DiscordEmoji.FromName(ctx.Client, ":joy:");
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = "Your joke",
+                Description = $"{jokeData.setup} \n\n{jokeData.delivery} {laughingEmoji}"
+            };
+
+            await ctx.Channel.SendMessageAsync(embed);
         }
     }
 }

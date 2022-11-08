@@ -39,8 +39,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
          * Command GasPrices is currently not working, work in progress
          */
 
-        [Command("gasolineprice")]
-        [Aliases("gp")]
+        //[Command("gasolineprice")]
+        //[Aliases("gp")]
         public async Task GasPrices(CommandContext ctx, int radius, [RemainingText] string city)
         {
             var cityName = city.Replace(" ", "+");

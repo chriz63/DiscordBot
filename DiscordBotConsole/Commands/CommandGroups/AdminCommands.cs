@@ -98,23 +98,32 @@ namespace DiscordBotConsole.Commands.CommandGroups
         [Description("Gets all users from the guild with their statuses")]
         public async Task UserStatusList(CommandContext ctx)
         {
-            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            var onlineEmoji = DiscordEmoji.FromName(ctx.Client, ":green_circle:");
+            var offlineEmoji = DiscordEmoji.FromName(ctx.Client, ":red_circle:");
+
+            DiscordEmbedBuilder embedOfflineUsers = new DiscordEmbedBuilder()
             {
-                Title = "User Status List"
+                Title = $"{offlineEmoji} User Status Offline List {offlineEmoji}"
+            };
+
+            DiscordEmbedBuilder embedOnlineUsers = new DiscordEmbedBuilder()
+            {
+                Title = $"{onlineEmoji} User Status Online List {onlineEmoji}"
             };
 
             foreach (var member in await ctx.Guild.GetAllMembersAsync())
             {
                 if (member.Presence == null)
                 {
-                    embed.AddField(member.DisplayName, "Offline");
+                    embedOfflineUsers.AddField(member.DisplayName, "Offline");
                 }
                 else
                 {
-                    embed.AddField(member.DisplayName, member.Presence.Status.ToString());
+                    embedOnlineUsers.AddField(member.DisplayName, member.Presence.Status.ToString());
                 }
             }
-            await ctx.Channel.SendMessageAsync(embed);
+            await ctx.Channel.SendMessageAsync(embedOnlineUsers);
+            await ctx.Channel.SendMessageAsync(embedOfflineUsers);
         }
     }
 }
