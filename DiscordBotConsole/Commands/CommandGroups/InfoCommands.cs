@@ -31,12 +31,23 @@ using DiscordBotConsole.Commands.Models;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
+    /// <summary>
+    /// Class <c>InfoCommands</c> includes commands that giving information about variuos things to a channel
+    /// </summary>
     [Group("info")]
+    [Description("Commands that giving information about variuos things to a channel")]
     public class InfoCommands : BaseCommandModule
     {
         public IConfiguration Configuration { get; set; }
         
+        /// <summary>
+        /// Task <c>Ip</c> sends informations about a IP Address to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [Command("ip")]
+        [Description("Sends informations about a IP Address to the channel\n\nUsage: !info ip <ip_address>")]
         public async Task Ip(CommandContext ctx, string ip)
         {
             //await ctx.TriggerTypingAsync();
