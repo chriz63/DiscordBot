@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
+using DSharpPlus.Entities;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -35,36 +36,48 @@ namespace DiscordBotConsole.Commands.CommandGroups
     {
         public IConfiguration Configuration;
 
-        /*
-         * Command GasPrices is currently not working, work in progress
-         */
 
-        //[Command("gasolineprice")]
-        //[Aliases("gp")]
-        public async Task GasPrices(CommandContext ctx, int radius, [RemainingText] string city)
+        /// <summary>
+        /// Task <c>GasolinePrices</c> send the Gas Stations with current prices in 3 km radius to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="city"></param>
+        /// <returns></returns>
+        [Command("gasolineprice")]
+        [Aliases("gp")]
+        [Description("Send the Gas Stations with current prices in 3 km radius to a channel")]
+        public async Task GasolinePrices(CommandContext ctx, [RemainingText] string city)
         {
+            // add a + between spaces in string for the api
             var cityName = city.Replace(" ", "+");
             var nominatimUrl = $"https://nominatim.openstreetmap.org/search.php?q={cityName}&format=jsonv2";
 
             JsonApi<NominatimModel> nominatimApi = new JsonApi<NominatimModel>();
             NominatimModel[] nominatimData = await nominatimApi.GetJsonArray(nominatimUrl);
 
-            var testUrl = "https://creativecommons.tankerkoenig.de/json/list.php?lat=52.521&lng=13.438&rad=1.5&sort=dist&type=all&apikey=00000000-0000-0000-0000-000000000002";
-            
-            
-            var tankerKoenigUrl = $"https://creativecommons.tankerkoenig.de/json/list.php?lat={nominatimData[0].lat}&lng={nominatimData[0].lon}&rad={radius}&sort=dist&type=all&apikey={Configuration.GetRequiredSection("ApiKeys:TankerKoenig").Value}";
-
-            Console.WriteLine(tankerKoenigUrl);
+            var tankerKoenigUrl = $"https://creativecommons.tankerkoenig.de/json/list.php?lat={nominatimData[0].lat}&lng={nominatimData[0].lon}&rad=3&sort=dist&type=all&apikey={Configuration.GetRequiredSection("ApiKeys:TankerKoenig").Value}";
 
             JsonApi<TankerKoenigModel> tankerKonigApi = new JsonApi<TankerKoenigModel>();
-            TankerKoenigModel tankerKoenigData = await tankerKonigApi.GetJson(testUrl);
+            TankerKoenigModel tankerKoenigData = await tankerKonigApi.GetJson(tankerKoenigUrl);
 
             foreach (var station in tankerKoenigData.stations)
             {
-                Console.WriteLine(station);
-            }
+                Console.WriteLine(station.street);
 
-            
+                // Build a own embed for every gas station
+                DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+                {
+                    Title = station.brand,
+                    Description = $"{station.street} {station.houseNumber}, {station.postCode} {station.place}"
+                };
+
+                embed.AddField("Super", $"{station.e5.ToString()}€");
+                embed.AddField("E10", $"{station.e10.ToString()}€");
+                embed.AddField("Diesel", $"{station.diesel.ToString()}€");
+
+                await ctx.Channel.SendMessageAsync(embed);
+                await Task.Delay(1000);
+            }
         }
 
     }

@@ -98,7 +98,7 @@ namespace DiscordBotConsole
             this.CommandsNext.RegisterCommands<WeatherCommands>();
             this.CommandsNext.RegisterCommands<FunCommands>();
             this.CommandsNext.RegisterCommands<QrCommands>();
-            //this.CommandsNext.RegisterCommands<UsefulCommands>();
+            this.CommandsNext.RegisterCommands<UsefulCommands>();
             this.CommandsNext.RegisterCommands<InfoCommands>();
 
             await this.Client.ConnectAsync();
