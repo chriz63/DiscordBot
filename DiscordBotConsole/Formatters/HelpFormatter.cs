@@ -43,7 +43,7 @@ namespace DiscordBotConsole.Formatters
                 "You can get more informations to a command or a command group by typing\n\n" +
                 "!help [Command] | i.e. !help help" +
                 "\n\nor\n\n" +
-                "!help [CommandGroup] | i.e. !help testcommands",
+                "!help [CommandGroup] | i.e. !help fun",
                 Color = new DiscordColor(DiscordColor.Aquamarine.ToString()),
             };
             
