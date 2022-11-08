@@ -48,7 +48,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <returns></returns>
         [Command("generate")]
         [Aliases("gen")]
-        [Description("Generates a Qr Code with user specified content")]
+        [Description("Generates a Qr Code with user specified content.\n\n" + 
+            "Usage: !qr gen <content_of_qr_code>")]
         public async Task Generate(CommandContext ctx, [RemainingText] string content)
         {
             string QrCodePath = Configuration.GetRequiredSection("QrCode:Path").Value + "QrCode.png";

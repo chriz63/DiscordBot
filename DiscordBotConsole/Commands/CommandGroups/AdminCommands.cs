@@ -45,7 +45,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="range"></param>
         /// <returns></returns>
         [Command("clear")]
-        [Description("Clears the chat, if a number is given after command it clears only the range from the given number.")]
+        [Description("Clears the chat, if a number is given after command it clears only the range from the given number.\n\n" +
+            "Usage: !admin clear or !admin clear <range>")]
         public async Task Clear(CommandContext ctx, params int[] range)
         {
             int rangeToDelete = 0;
@@ -74,7 +75,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="message"></param>
         /// <returns></returns>
         [Command("spammer")]
-        [Description("Sends a amount of messages to a channel.")]
+        [Description("Sends a amount of messages to a channel.\n\n" + 
+            "Usage: !admin spammer <amount> <message>")]
         public async Task Spammer(CommandContext ctx, int amount, [RemainingText] string message)
         {
             await ctx.TriggerTypingAsync();
@@ -93,7 +95,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <returns></returns>
         [Command("userstatuslist")]
         [Aliases("usl")]
-        [Description("Gets all users from the guild with their statuses")]
+        [Description("Gets all users from the guild with their statuses.\n\n" + 
+            "Usage: !admin userstatuslist or !admin usl")]
         public async Task UserStatusList(CommandContext ctx)
         {
             var onlineEmoji = DiscordEmoji.FromName(ctx.Client, ":green_circle:");

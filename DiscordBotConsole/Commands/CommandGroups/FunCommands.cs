@@ -44,7 +44,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="discordUser"></param>
         /// <returns></returns>
         [Command("penis")]
-        [Description("Sends a users penis size from random length")]
+        [Description("Sends a users penis size from random length.\n\n" + 
+            "Usage: !fun penis or !fun penis <username>")]
         public async Task Penis(CommandContext ctx, DiscordMember discordUser = null)
         {
             await ctx.TriggerTypingAsync();
@@ -70,7 +71,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="language"></param>
         /// <returns></returns>
         [Command("joke")]
-        [Description("Sends a joke in german or english to the channel")]
+        [Description("Sends a joke in german or english to the channel.\n" + "Available languages are: <de> or <en>\n\n" + 
+            "Usage: !fun joke or !fun joke <language>")]
         public async Task Joke(CommandContext ctx, string language = null)
         {
             string jokeApiUrl = null;

@@ -47,7 +47,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="city"></param>
         /// <returns></returns>
         [Command("city")]
-        [Description("Displays weather informations for the given city")]
+        [Description("Displays weather informations for the given city.\n\n" + 
+            "Usage: !weather city <city>")]
         public async Task City(CommandContext ctx, [RemainingText] string city)
         {
             await ctx.Channel.TriggerTypingAsync();

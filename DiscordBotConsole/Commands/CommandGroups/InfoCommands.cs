@@ -47,7 +47,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="ip"></param>
         /// <returns></returns>
         [Command("ip")]
-        [Description("Sends informations about a IP Address to the channel\n\nUsage: !info ip <ip_address>")]
+        [Description("Sends informations about a IP Address to the channel\n\n" +
+            "Usage: !info ip <ip_address>")]
         public async Task Ip(CommandContext ctx, string ip)
         {
             //await ctx.TriggerTypingAsync();

@@ -44,7 +44,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <returns></returns>
         [Command("gasolineprice")]
         [Aliases("gp")]
-        [Description("Send the Gas Stations with current prices in 3 km radius to a channel")]
+        [Description("Send the Gas Stations with current prices in 3 km radius to a channel.\n\n" + 
+            "Usage: !useful gasolineprice <city> or !useful gp <city>")]
         public async Task GasolinePrices(CommandContext ctx, [RemainingText] string city)
         {
             // add a + between spaces in string for the api
