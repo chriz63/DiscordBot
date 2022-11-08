@@ -99,6 +99,7 @@ namespace DiscordBotConsole
             this.CommandsNext.RegisterCommands<FunCommands>();
             this.CommandsNext.RegisterCommands<QrCommands>();
             //this.CommandsNext.RegisterCommands<UsefulCommands>();
+            this.CommandsNext.RegisterCommands<InfoCommands>();
 
             await this.Client.ConnectAsync();
             await Task.Delay(-1);
