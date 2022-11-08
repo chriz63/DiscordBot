@@ -37,7 +37,7 @@ namespace DiscordBotConsole.ApiRequests
         {
             client.DefaultRequestHeaders.Add("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6,ru;q=0.4");
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
-            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate,sdch");
+            //client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate,sdch");
             client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8");
 
         }
