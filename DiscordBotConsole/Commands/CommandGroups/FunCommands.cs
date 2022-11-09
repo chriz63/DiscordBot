@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.Serialization.Formatters;
 
+/// TODO: Better argument handling in GIF command
+
 namespace DiscordBotConsole.Commands.CommandGroups
 {
     /// <summary>
