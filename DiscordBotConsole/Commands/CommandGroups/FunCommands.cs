@@ -228,5 +228,52 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             await ctx.Channel.SendMessageAsync(embed);
         }
+        /// <summary>
+        /// Task <c>Artist</c> sends a random song by a artist from LastFM to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="artist"></param>
+        /// <returns></returns>
+        [Command("artist")]
+        [Description("Sends a random song by a artist from LastFM to a channel")]
+        public async Task Artist(CommandContext ctx, [RemainingText] string artist)
+        {
+            var replacedArtist = artist.Replace(" ", "");
+            var lastFmApiUrl = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist={replacedArtist}&api_key={Configuration.GetRequiredSection("ApiKeys:LastFM").Value}&format=json";
+
+            Console.WriteLine(lastFmApiUrl);
+
+            JsonApi<SongByArtistModel> lastFmApi = new JsonApi<SongByArtistModel>();
+            SongByArtistModel lastFmData = await lastFmApi.GetJson(lastFmApiUrl);
+
+            Console.WriteLine(lastFmData.toptracks);
+
+            Random random = new Random();
+            int index = random.Next(lastFmData.toptracks.track.Count);
+
+            var song = lastFmData.toptracks.track[index];
+            var imageList = song.image;
+            ImageByArtist image = new ImageByArtist();
+
+            foreach (var img in imageList)
+            {
+                if (img.size == "large")
+                {
+                    image = img;
+                }
+            }
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = song.name,
+                Description = song.artist.name,
+                ImageUrl = image.Text
+            };
+
+            embed.AddField("Listeners", song.listeners);
+            embed.AddField("LastFM URL", song.url);
+
+            await ctx.Channel.SendMessageAsync(embed);
+        }
     }
 }
