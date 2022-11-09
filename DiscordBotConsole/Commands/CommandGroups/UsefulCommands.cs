@@ -24,6 +24,7 @@ using Microsoft.Extensions.Configuration;
 using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
 using DSharpPlus.Entities;
+using System.Reflection.Metadata;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -78,5 +79,32 @@ namespace DiscordBotConsole.Commands.CommandGroups
             }
         }
 
+        /// <summary>
+        /// Task <c>Url</c> sends a via cutt.ly shortenend URL to a Channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        [Command("url")]
+        [Description("Sends a via cutt.ly shortenend URL to a Channel.\n\n" + 
+            "Usage: !useful url <url>")]
+        public async Task Url(CommandContext ctx, string url)
+        {
+            var cuttlyApiUrl = $"https://cutt.ly/api/api.php?key={Configuration.GetRequiredSection("ApiKeys:Cuttly").Value}&short={url}";
+
+            JsonApi<CuttlyModel> cuttlyApi = new JsonApi<CuttlyModel>();
+            CuttlyModel cuttlyData = await cuttlyApi.GetJson(cuttlyApiUrl);
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = $"Your shortenend URL to {cuttlyData.url.title}",
+                Description = $"Created at: {cuttlyData.url.date}",
+            };
+
+            embed.AddField("Short URL", cuttlyData.url.shortLink);
+            embed.AddField("Full URL", cuttlyData.url.fullLink);
+
+            await ctx.Channel.SendMessageAsync(embed);
+        }
     }
 }
