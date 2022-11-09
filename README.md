@@ -49,16 +49,37 @@
 ## Available commands
 
 - !help
+
+---
+
 - !admin clear (only available for bot owners) / clears a text channel
 - !admin spammer (only available for bot owners) / spamms a text channel
 - !admin userstatuslist | !admin usl / sends a list from all available users in guild with their online statuses
+
+---
+
 - !weather city / sends weather information from a specific city to a channel
+
+---
+
 - !fun penis / gets a random penis length from a user to a channel
 - !fun joke / sends a random joke in german or english to a channel
 - !fun gif / send a random gif by a category to a channel
+- !fun song / sends a random song from LastFM to a channel
+- !fun artist / sends a random song by a artist from LastFM to a channel
+
+---
+
 - !info ip / sends iformations about a ip address to a channel
+
+---
+
 - !qr generate | !qr gen / generates a qr code with user specified content
+
+---
+
 - !useful gasolineprice | !useful gp / sends the Gas Stations with current prices in 3 km radius to a channel
+- !useful url / sends a via cutt.ly shortenend URL to a channel
 
 ## How to build the bot
 
