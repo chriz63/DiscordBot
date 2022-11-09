@@ -80,7 +80,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
         }
 
         /// <summary>
-        /// Task <c>Url</c> sends a via cutt.ly shortenend URL to a Channel
+        /// Task <c>Url</c> sends a via cutt.ly shortenend URL to a channel
         /// </summary>
         /// <param name="ctx"></param>
         /// <param name="url"></param>
