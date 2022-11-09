@@ -29,6 +29,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DiscordBotConsole.Formatters;
 using DiscordBotConsole.Commands.CommandGroups;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DiscordBotConsole
 {
@@ -84,14 +85,18 @@ namespace DiscordBotConsole
             var services = new ServiceCollection()
                 .AddSingleton(Configuration)
                 .BuildServiceProvider();
-            
+
+            string Prefix = Configuration.GetRequiredSection("Settings:CommandPrefix").Value;
+#if DEBUG
+            Prefix = DevConfiguration.GetRequiredSection("Settings:CommandPrefix").Value;
+#endif
 
             // Configure the Commands
             this.CommandsNext = this.Client.UseCommandsNext(new CommandsNextConfiguration()
             {
-                StringPrefixes = new string[] { Configuration.GetRequiredSection("Settings:CommandPrefix").Value },
+                StringPrefixes = new string[] { Prefix },
                 Services = services,
-            });
+            }) ;
 
             // Hook some events to see whats going on
             this.Client.Ready += this.Client_Ready;
