@@ -21,7 +21,8 @@
     "OpenWeatherMap": "Put your OpenWeatherMap credentials here",
     "TankerKoenig": "Put your TankerKoenig credentials here",
     "IpInfoIo": "Put your IPInfo.io credentials here",
-    "Tenor": "Put your TENOR credentials here"
+    "Tenor": "Put your TENOR credentials here",
+    "IMDB": "Put your IMDB credentials here"
   },
   "QrCode": {
     "Path": "Put your saving path for qr codes here"

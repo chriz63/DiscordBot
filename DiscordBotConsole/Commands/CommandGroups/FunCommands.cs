@@ -26,6 +26,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.Serialization.Formatters;
+using System.Collections.Generic;
 
 /// TODO: Better argument handling in GIF command
 
@@ -138,6 +139,48 @@ namespace DiscordBotConsole.Commands.CommandGroups
             }
 
             embed.WithFooter("Via Tenor", "https://www.gstatic.com/tenor/web/attribution/via_tenor_logo_white.png");
+
+            await ctx.Channel.SendMessageAsync(embed);
+        }
+
+        /// <summary>
+        /// Task <c>Moviel</c> sends a random movie from IMDB Top 250 to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        [Command("movie")]
+        [Description("Sends a random movie from IMDB Top 250 to a channel.\n\n" + 
+            "Usage: !fun movie")]
+        public async Task Movie(CommandContext ctx)
+        {
+            var imdbApiUrl = $"https://imdb-api.com/de/API/Top250Movies/{Configuration.GetRequiredSection("ApiKeys:IMDB").Value}";
+
+            JsonApi<IMDBMovieModel> imdbApi = new JsonApi<IMDBMovieModel>();
+            IMDBMovieModel imdbData = await imdbApi.GetJson(imdbApiUrl);
+
+            Random random = new Random();
+            int index = random.Next(imdbData.items.Count);
+
+            var movie = imdbData.items[index];
+
+            string[] crew = movie.crew.Split(",");
+
+            foreach (var crewMember in crew)
+            {
+                crewMember.Replace(" ", "");
+            }
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = movie.fullTitle,
+                Description = $"IMDB Rating: {movie.imDbRating}",
+                ImageUrl = movie.image,
+            };
+
+            foreach (var crewMember in crew)
+            {
+                embed.AddField("Crew", crewMember);
+            }
 
             await ctx.Channel.SendMessageAsync(embed);
         }
