@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.Serialization.Formatters;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Reflection.Metadata;
 
 /// TODO: Better argument handling in GIF command
 
@@ -181,6 +183,48 @@ namespace DiscordBotConsole.Commands.CommandGroups
             {
                 embed.AddField("Crew", crewMember);
             }
+
+            await ctx.Channel.SendMessageAsync(embed);
+        }
+
+        /// <summary>
+        /// Task <c>Song</c> sends a random song from LastFM to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        [Command("song")]
+        [Description("Sends a random song from LastFM to a channel")]
+        public async Task Song(CommandContext ctx)
+        {
+            var lastFmApiUrl = $"http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=germany&api_key={Configuration.GetRequiredSection("ApiKeys:LastFM").Value}&format=json";
+            
+            JsonApi<SongModel> lastFmApi = new JsonApi<SongModel>();
+            SongModel lastFmData = await lastFmApi.GetJson(lastFmApiUrl);
+
+            Random random = new Random();
+            int index = random.Next(lastFmData.tracks.track.Count);
+
+            var song = lastFmData.tracks.track[index];
+            var imageList = song.image;
+            Image image = new Image();
+
+            foreach (var img in imageList)
+            {
+                if (img.size == "large")
+                {
+                    image = img;
+                }
+            }
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = song.name,
+                Description = song.artist.name,
+                ImageUrl = image.Text
+            };
+
+            embed.AddField("Listeners", song.listeners);
+            embed.AddField("LastFM URL", song.url);
 
             await ctx.Channel.SendMessageAsync(embed);
         }
