@@ -193,7 +193,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="ctx"></param>
         /// <returns></returns>
         [Command("song")]
-        [Description("Sends a random song from LastFM to a channel")]
+        [Description("Sends a random song from LastFM to a channel.\n\n" + 
+            "Usage: !fun song")]
         public async Task Song(CommandContext ctx)
         {
             var lastFmApiUrl = $"http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&country=germany&api_key={Configuration.GetRequiredSection("ApiKeys:LastFM").Value}&format=json";
@@ -235,7 +236,8 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="artist"></param>
         /// <returns></returns>
         [Command("artist")]
-        [Description("Sends a random song by a artist from LastFM to a channel")]
+        [Description("Sends a random song by a artist from LastFM to a channel.\n\n" + 
+            "Usage: !fun artist <artist>")]
         public async Task Artist(CommandContext ctx, [RemainingText] string artist)
         {
             string replacedArtist = null;
