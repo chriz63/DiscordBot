@@ -59,6 +59,7 @@
 ---
 
 - !weather city / sends weather information from a specific city to a channel
+- !weather forecast / sends a weatherforecast in 3 hour interval to a channel
 
 ---
 

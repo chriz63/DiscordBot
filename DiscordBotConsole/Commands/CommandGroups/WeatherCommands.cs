@@ -82,5 +82,53 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             await ctx.Channel.SendMessageAsync(embed);
         }
+
+        /// <summary>
+        /// Task <c>City</c> sends a weatherforecast in 3 hour interval to a channel
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="city"></param>
+        /// <returns></returns>
+        [Command("forecast")]
+        [Description("Sends a weatherforecast in 3 hour interval to a channel.\n\n" +
+            "Usage: !weather forecast <city>")]
+        public async Task Forecast(CommandContext ctx, string city)
+        {
+            var cityName = city.Replace(" ", "+");
+            var nominatimUrl = $"https://nominatim.openstreetmap.org/search.php?q={cityName}&format=jsonv2";
+            JsonApi<NominatimModel> jsonApi = new JsonApi<NominatimModel>();
+            NominatimModel[] nominatimData = await jsonApi.GetJsonArray(nominatimUrl);
+
+            var owmUrl = $"https://api.openweathermap.org/data/2.5/forecast?lat={nominatimData[0].lat}&lon={nominatimData[0].lon}&units=metric&appid={Configuration.GetRequiredSection("ApiKeys:OpenWeatherMap").Value}";
+            JsonApi<ForecastModel> owmApi = new JsonApi<ForecastModel>();
+            ForecastModel owmData = await owmApi.GetJson(owmUrl);
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = $"Forecast for {owmData.city.name}",
+                Description = $"Forecast in 3 hour interval"
+            };
+
+            await ctx.Channel.SendMessageAsync(embed);
+
+            for (int i = 0; i <= 3; i++)
+            {
+                var forecast = owmData.list[i];
+
+                DiscordEmbedBuilder forecastEmbed = new DiscordEmbedBuilder()
+                {
+                    Title = forecast.dt_txt,
+                };
+                forecastEmbed.AddField("Weather", forecast.weather[0].description);
+                forecastEmbed.AddField("Current temperature", forecast.main.temp.ToString() + " °C");
+                forecastEmbed.AddField("Feels like", forecast.main.feels_like.ToString() + " °C");
+                forecastEmbed.AddField("Minimum temperature", forecast.main.temp_min.ToString() + " °C");
+                forecastEmbed.AddField("Maximum temperature", forecast.main.temp_max.ToString() + " °C");
+                forecastEmbed.AddField("Wind speed", forecast.wind.speed.ToString() + " m/s");
+                forecastEmbed.AddField("Wind direction", forecast.wind.deg.ToString() + " °");
+
+                await ctx.Channel.SendMessageAsync(forecastEmbed);
+            }
+        }
     }
 }
