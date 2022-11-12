@@ -25,12 +25,6 @@ using DSharpPlus.CommandsNext.Attributes;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.Runtime.Serialization.Formatters;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Reflection.Metadata;
-
-/// TODO: Better argument handling in GIF command
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -131,7 +125,17 @@ namespace DiscordBotConsole.Commands.CommandGroups
 
             DiscordEmbedBuilder embed = new DiscordEmbedBuilder();
 
-            if (size == "small")
+            var emoji = DiscordEmoji.FromName(ctx.Client, ":exclamation:");
+
+            if (size != "small" && size != "medium")
+            {
+                embed.AddField($"{emoji} Error {emoji}", "Please enter the size of the GIF.\n\nFor help use !help fun gif");
+            }
+            else if (category == null)
+            {
+                embed.AddField($"{emoji} Error {emoji}", "Please enter the catergory of the GIF.\n\nFor help use !help fun gif");
+            }
+            else if (size == "small")
             {
                 embed.WithImageUrl(tenorData.results[0].media[0].tinygif.url);
             }
@@ -140,7 +144,10 @@ namespace DiscordBotConsole.Commands.CommandGroups
                 embed.WithImageUrl(tenorData.results[0].media[0].mediumgif.url);
             }
 
-            embed.WithFooter("Via Tenor", "https://www.gstatic.com/tenor/web/attribution/via_tenor_logo_white.png");
+            if (size == "small" || size == "medium")
+            {
+                embed.WithFooter("Via Tenor", "https://www.gstatic.com/tenor/web/attribution/via_tenor_logo_white.png");
+            }
 
             await ctx.Channel.SendMessageAsync(embed);
         }
