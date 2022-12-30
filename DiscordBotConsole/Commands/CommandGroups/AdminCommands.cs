@@ -23,6 +23,8 @@ using DSharpPlus.CommandsNext.Attributes;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -75,7 +77,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <param name="message"></param>
         /// <returns></returns>
         [Command("spammer")]
-        [Description("Sends a amount of messages to a channel.\n\n" + 
+        [Description("Sends a amount of messages to a channel.\n\n" +
             "Usage: !admin spammer <amount> <message>")]
         public async Task Spammer(CommandContext ctx, int amount, [RemainingText] string message)
         {
@@ -95,7 +97,7 @@ namespace DiscordBotConsole.Commands.CommandGroups
         /// <returns></returns>
         [Command("userstatuslist")]
         [Aliases("usl")]
-        [Description("Gets all users from the guild with their statuses.\n\n" + 
+        [Description("Gets all users from the guild with their statuses.\n\n" +
             "Usage: !admin userstatuslist or !admin usl")]
         public async Task UserStatusList(CommandContext ctx)
         {
@@ -125,6 +127,54 @@ namespace DiscordBotConsole.Commands.CommandGroups
             }
             await ctx.Channel.SendMessageAsync(embedOnlineUsers);
             await ctx.Channel.SendMessageAsync(embedOfflineUsers);
+        }
+
+        /// <summary>
+        /// Task <c>GrantRole</c> Grants a role to a specific user
+        /// </summary>
+        /// <param name="ctx">CommandContext</param>
+        /// <param name="discordUser">DiscordUser</param>
+        /// <param name="discordRole">DiscordRole</param>
+        /// <returns></returns>
+        [Command("grantrole")]
+        public async Task GrantRole(CommandContext ctx, DiscordMember discordUser, DiscordRole discordRole)
+        {
+            var embed = new DiscordEmbedBuilder();
+
+            try
+            {
+                await discordUser.GrantRoleAsync(discordRole);
+                embed.AddField("Success", $"{discordUser.Username} successfully granted to {discordRole.Name}");
+            }
+            catch
+            {
+                embed.AddField("Error", $"{discordUser.Username} could not granted to {discordRole.Name}");
+            }
+            await ctx.Channel.SendMessageAsync(embed);
+        }
+
+        /// <summary>
+        /// Task <c>RevokeRole</c> Revokes a role from a specific user
+        /// </summary>
+        /// <param name="ctx" > CommandContext </ param >
+        /// <param name="discordUser">DiscordUser</param>
+        /// <param name="discordRole">DiscordRole</param>
+        /// <returns></returns>
+        [Command("revokerole")]
+        public async Task RevokeRole(CommandContext ctx, DiscordMember discordUser, DiscordRole discordRole)
+        {
+            var embed = new DiscordEmbedBuilder();
+
+            try
+            {
+                await discordUser.RevokeRoleAsync(discordRole);
+                embed.AddField("Success", $"{discordUser.Username} successfully revoked from {discordRole.Name}");
+            }
+            catch
+            {
+                embed.AddField("Error", $"{discordUser.Username} could not revoked from {discordRole.Name}");
+            }
+            await ctx.Channel.SendMessageAsync(embed);
         }
     }
 }
