@@ -89,3 +89,25 @@
 ```
 dotnet publish -c Release -r linux-x64 --self-contained false
 ```
+
+## Run Bot on Linux
+
+To run this bot on Linux you have to install .NET Core 3.1, i recommend to install screen too.
+
+After the installation you can simply run the bot from his directroy with following command
+
+```
+screen -A -m -d -S Bot ./DiscordBotConsole
+```
+
+the bot is now running in the backround, to view the output of the logger you can view it by typing following command
+
+```
+screen -r Bot
+```
+
+to exit this view simply type
+
+```
+CTRL + A + D
+```
