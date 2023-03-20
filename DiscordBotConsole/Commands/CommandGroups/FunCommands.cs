@@ -303,5 +303,31 @@ namespace DiscordBotConsole.Commands.CommandGroups
                 await ctx.RespondAsync(errorEmbed);
             }
         }
+
+        [Command("ISS")]
+        [Description("Sends the position of ISS with an OpenStreetMap image to a channel\n\n" +
+            "Usage: !fun iss")]
+        public async Task ISS(CommandContext ctx)
+        {
+
+            await ctx.TriggerTypingAsync();
+
+            DiscordEmbedBuilder embed = new DiscordEmbedBuilder()
+            {
+                Title = "Posititon of International Space Station"
+            };
+
+            JsonApi<IssModel> issApi = new JsonApi<IssModel>();
+            IssModel issData = await issApi.GetJson("http://api.open-notify.org/iss-now.json");
+
+            var lat = issData.iss_position.latitude;
+            var lon = issData.iss_position.longitude;
+
+            embed.AddField("Latitude", $"{lat}");
+            embed.AddField("Longitude", $"{lon}");
+            embed.WithImageUrl($"https://maps.geoapify.com/v1/staticmap?style=osm-carto&width=600&height=400&center=lonlat:{lat},{lon}&zoom=2&marker=lonlat:{lat},{lon};color:%23ff0000;size:medium&apiKey=1b11607ae9184fc599f74baf7de1b59d");
+            await ctx.RespondAsync(embed);
+
+        }
     }
 }
