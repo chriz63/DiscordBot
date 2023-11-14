@@ -25,6 +25,7 @@ using DiscordBotConsole.ApiRequests;
 using DiscordBotConsole.Commands.Models;
 using DSharpPlus.Entities;
 using System.Reflection.Metadata;
+using System;
 
 namespace DiscordBotConsole.Commands.CommandGroups
 {
@@ -49,6 +50,9 @@ namespace DiscordBotConsole.Commands.CommandGroups
             "Usage: !useful gasolineprice <city> or !useful gp <city>")]
         public async Task GasolinePrices(CommandContext ctx, [RemainingText] string city)
         {
+
+            await ctx.TriggerTypingAsync();
+
             // add a + between spaces in string for the api
             var cityName = city.Replace(" ", "+");
             var nominatimUrl = $"https://nominatim.openstreetmap.org/search.php?q={cityName}&format=jsonv2";
@@ -57,10 +61,11 @@ namespace DiscordBotConsole.Commands.CommandGroups
             NominatimModel[] nominatimData = await nominatimApi.GetJsonArray(nominatimUrl);
 
             var tankerKoenigUrl = $"https://creativecommons.tankerkoenig.de/json/list.php?lat={nominatimData[0].lat}&lng={nominatimData[0].lon}&rad=3&sort=dist&type=all&apikey={Configuration.GetRequiredSection("ApiKeys:TankerKoenig").Value}";
-
+            Console.WriteLine(tankerKoenigUrl);
+            
             JsonApi<TankerKoenigModel> tankerKonigApi = new JsonApi<TankerKoenigModel>();
             TankerKoenigModel tankerKoenigData = await tankerKonigApi.GetJson(tankerKoenigUrl);
-
+            
             foreach (var station in tankerKoenigData.stations)
             {   
                 // Build a own embed for every gas station
@@ -70,9 +75,19 @@ namespace DiscordBotConsole.Commands.CommandGroups
                     Description = $"{station.street} {station.houseNumber}, {station.postCode} {station.place}"
                 };
 
-                embed.AddField("Super", $"{station.e5.ToString()}€");
-                embed.AddField("E10", $"{station.e10.ToString()}€");
-                embed.AddField("Diesel", $"{station.diesel.ToString()}€");
+                if (station.e5 != null)
+                { 
+                    embed.AddField("Super", $"{station.e5.ToString()}€"); 
+                }
+                if (station.e10 != null)
+                {
+                    embed.AddField("E10", $"{station.e10.ToString()}€");
+                }
+                if (station.diesel != null)
+                {
+                    embed.AddField("Diesel", $"{station.diesel.ToString()}€");
+                }
+                
 
                 await ctx.Channel.SendMessageAsync(embed);
                 await Task.Delay(1000);

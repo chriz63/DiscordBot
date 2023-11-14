@@ -39,9 +39,9 @@ namespace DiscordBotConsole.Commands.Models
         public double lat { get; set; }
         public double lng { get; set; }
         public double dist { get; set; }
-        public double diesel { get; set; }
-        public double e5 { get; set; }
-        public double e10 { get; set; }
+        public double? diesel { get; set; }
+        public double? e5 { get; set; }
+        public double? e10 { get; set; }
         public bool isOpen { get; set; }
         public string houseNumber { get; set; }
         public int postCode { get; set; }
